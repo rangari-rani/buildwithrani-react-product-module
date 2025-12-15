@@ -7,7 +7,7 @@ The Product module delivers the core product browsing and discovery experience, 
 
 ---
 
-## 🚀 Live Demo: [Try it on Vercel]()
+## 🚀 Live Demo: [Try it on Vercel](https://buildwithrani-react-product-module.vercel.app)
 
 ---
 
@@ -22,20 +22,20 @@ The Product module delivers the core product browsing and discovery experience, 
 ## 📸 Screenshots
 
 ### 🖥️ Desktop View
-![]()
-_Hero Section_
-![Landing Page Category Preview]()
-_Catgeory Section_
-![Landing Page Footer Preview]()
-_Footer Section_
+![Product List Page](https://github.com/rangari-rani/buildwithrani-react-product-module/blob/93cb41bd2cdda16955a71ef08fb0f67a7de0630b/public/product-list-desktop.png)
+_Product List Page_
+![Product Detail Page](https://github.com/rangari-rani/buildwithrani-react-product-module/blob/93cb41bd2cdda16955a71ef08fb0f67a7de0630b/public/product-detail-desc-desktop.png)
+_Product Detail Page_
 
 ### 📱 Mobile Views
 <p align="center">
-  <img src="" alt="Mobile Hero View" width="22%">
+  <img src="https://github.com/rangari-rani/buildwithrani-react-product-module/blob/93cb41bd2cdda16955a71ef08fb0f67a7de0630b/public/product-list-mobile.png" alt="Mobile Product Card" width="22%">
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="" alt="Mobile Categories View" width="22%">
+  <img src="https://github.com/rangari-rani/buildwithrani-react-product-module/blob/93cb41bd2cdda16955a71ef08fb0f67a7de0630b/public/product-filters-mobile.png" alt="Mobile Product Filters" width="22%">
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="" alt="Mobile Footer View" width="22%">
+  <img src="https://github.com/rangari-rani/buildwithrani-react-product-module/blob/93cb41bd2cdda16955a71ef08fb0f67a7de0630b/public/product-detail-mobile.png" alt="Mobile Product Detail" width="22%">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://github.com/rangari-rani/buildwithrani-react-product-module/blob/93cb41bd2cdda16955a71ef08fb0f67a7de0630b/public/product-detail-desc-mobile.png" alt="Mobile Product Detail" width="22%">
 </p>
 
 _Mobile responsive design screenshots_
@@ -54,7 +54,54 @@ _Mobile responsive design screenshots_
 <summary><strong>📂 Click to view folder structure</strong></summary>
 
 ```tsx
-
+src/
+|
++---components
+|   +---Product
+|       |
+|       +---ProductCard
+|       |   ProductCard.tsx
+|       |   ProductCardSkeleton.tsx
+|       |
+|       +---ProductList
+|       |   ProductList.tsx
+|       |   SortBar.tsx
+|       |   Pagination.tsx
+|       |   Breadcrumbs.tsx
+|       |   |
+|       |   +---FiltersSidebar
+|       |   |   FiltersSidebar.tsx
+|       |   |   PriceFilter.tsx
+|       |   |   CategoryFilter.tsx
+|       |   |   DiscountFilter.tsx
+|       |   |   HighlightFilter.tsx
+|       |   |
+|       |   \---hooks
+|       |       useProductFilters.ts
+|       |       useProductSorting.ts
+|       |       useBreadcrumbs.ts
+|       |
+|       +---ProductDetail
+|       |   ProductDetail.tsx
+|       |   ProductGallery.tsx
+|       |   ProductInfo.tsx
+|       |   RelatedProducts.tsx
+|       |   Wishlist.tsx
+|       |   |
+|       |   \---hooks
+|       |       useProductDetail.ts
+|       |       useRelatedProducts.ts
+|       |
+|       \---Search
+|           SearchBar.tsx
+|           SearchPage.tsx
+|           |
+|           \---hooks
+|               useSearch.ts
+|
++---data
+|   products.ts
+|   categories.ts
 ```
 </details>
 
