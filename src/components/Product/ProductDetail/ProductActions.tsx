@@ -11,7 +11,7 @@ export default function ProductActions({ productId }: Props) {
   const navigate = useNavigate();
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  // Load initial state
+
   useEffect(() => {
     const saved: number[] = JSON.parse(
       localStorage.getItem("wishlist") || "[]"

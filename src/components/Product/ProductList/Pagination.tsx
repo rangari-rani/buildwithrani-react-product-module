@@ -13,7 +13,7 @@ export default function Pagination({
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
     .filter((page) => {
-      // Always show first + last + current ±2
+   
       return (
         page === 1 ||
         page === totalPages ||
@@ -32,7 +32,7 @@ export default function Pagination({
         ◀
       </button>
 
-      {/* Page numbers with smart ellipsis */}
+
       {pages.map((page, idx) => {
         const prevPage = pages[idx - 1];
         const showEllipsis = prevPage && page - prevPage > 1;

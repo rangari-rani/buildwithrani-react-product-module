@@ -15,7 +15,7 @@ export default function ProductGallery({ product }: Props) {
   return (
     <div className="md:w-1/3 flex flex-col items-center gap-4">
 
-      {/* MAIN IMAGE — EXACTLY AS ORIGINAL */}
+ 
       <div className="flex justify-center items-center bg-linear-to-br from-gray-50 to-gray-200 rounded-xl p-4 shadow-md hover:shadow-lg transition w-full">
         <img
           src={activeImage}
@@ -24,7 +24,7 @@ export default function ProductGallery({ product }: Props) {
         />
       </div>
 
-      {/* MOBILE THUMBNAILS (HORIZONTAL) */}
+
       <div className="flex md:hidden gap-3 overflow-x-auto w-full pb-2">
         {images.map((img, idx) => (
           <img
@@ -37,7 +37,7 @@ export default function ProductGallery({ product }: Props) {
         ))}
       </div>
 
-      {/* DESKTOP THUMBNAILS (VERTICAL LEFT) */}
+
       <div className="hidden md:flex flex-row gap-3 w-full items-start">
         {images.map((img, idx) => (
           <img

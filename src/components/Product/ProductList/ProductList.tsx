@@ -33,7 +33,7 @@ export default function ProductList() {
   const [discountFilters, setDiscountFilters] = useState<any[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // 1️⃣ FILTERING 
+  // FILTERING 
   const filteredProducts = useProductFilters({
     categorySlug,
     typeSlug,
@@ -43,7 +43,7 @@ export default function ProductList() {
     discountFilters,
   });
 
-  // 2️⃣ SORTING (sorting happens AFTER filtering)
+  // SORTING (sorting happens AFTER filtering)
   const sortedProducts = useProductSorting(filteredProducts, sortOption);
 
   // Reset page on filter/sort change
@@ -51,7 +51,7 @@ export default function ProductList() {
     setCurrentPage(1);
   }, [sortOption, priceRange, highlightFilter, discountFilters]);
 
-  // 3️⃣ PAGINATION (should use sortedProducts, not filteredProducts)
+  // PAGINATION (should use sortedProducts, not filteredProducts)
   const productsPerPage = 9;
   const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;

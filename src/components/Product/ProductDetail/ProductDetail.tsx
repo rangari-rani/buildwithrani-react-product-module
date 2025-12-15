@@ -13,19 +13,19 @@ import ProductGallerySkeleton from "./ProductGallerySkeleton";
 import RelatedProductsSkeleton from "./RelatedProductsSkeleton";
 
 export default function ProductDetail() {
-const { product } = useProductDetail();
-const relatedProducts = useRelatedProducts(product, products);
+  const { product } = useProductDetail();
+  const relatedProducts = useRelatedProducts(product, products);
 
-const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-useEffect(() => {
-  // simulate API
-  const timer = setTimeout(() => {
-    setIsLoading(false);
-  }, 10);
+  useEffect(() => {
 
-  return () => clearTimeout(timer);
-}, []);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!product) {
     return <div className="p-8 text-center text-gray-500">Product not found.</div>;
@@ -36,24 +36,24 @@ useEffect(() => {
       <Breadcrumbs product={product} />
 
       <div className="flex flex-col md:flex-row gap-8">
-       {isLoading ? <ProductGallerySkeleton /> : <ProductGallery product={product} />}
+        {isLoading ? <ProductGallerySkeleton /> : <ProductGallery product={product} />}
 
-      <div className="flex-1">
-  <div className="bg-white shadow-sm p-8 grid gap-8 auto-rows-min min-h-[420px] rounded-lg">
-   {isLoading ? (
-  <ProductInfoSkeleton />
-) : (
-  <ProductInfo product={product} />
-)}
+        <div className="flex-1">
+          <div className="bg-white shadow-sm p-8 grid gap-8 auto-rows-min min-h-[420px] rounded-lg">
+            {isLoading ? (
+              <ProductInfoSkeleton />
+            ) : (
+              <ProductInfo product={product} />
+            )}
 
-  <ProductActions productId={product.id} />
+            <ProductActions productId={product.id} />
 
-  </div>
-</div>
+          </div>
+        </div>
 
       </div>
 
-       {isLoading ? <RelatedProductsSkeleton /> :<RelatedProducts products={relatedProducts} />}
+      {isLoading ? <RelatedProductsSkeleton /> : <RelatedProducts products={relatedProducts} />}
     </div>
   );
 }
