@@ -1,4 +1,5 @@
-import type { Category } from "../../../../data/categories";
+import type { Category } from "../../../data/categories";
+
 
 export const getMenuType = (category: Category) => {
   const hasMultipleSubcats = category.children && category.children.length > 1;

@@ -11,6 +11,3 @@ export * from "./types";
 // Hooks
 export * from "./hooks/useProductDetail";
 
-// Utils
-export * from "./utils/formatRating";
-export * from "./utils/getInitials";
