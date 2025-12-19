@@ -44,7 +44,14 @@ _Mobile responsive design screenshots_
 
 ## ✨ Features 
 
-
+- Product listing with reusable cards and skeleton loaders
+- Advanced filtering (price, category, discount, highlights)
+- Sorting and breadcrumb-based navigation
+- Product detail page with gallery, info, and related products
+- Wishlist UI (placeholder)
+- Global search with dedicated results page
+- Custom hooks for filters, sorting, search, and product data
+- Mock data–driven
 
 ---
 
