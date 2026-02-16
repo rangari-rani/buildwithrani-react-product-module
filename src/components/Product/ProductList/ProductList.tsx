@@ -26,13 +26,41 @@ export default function ProductList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { categorySlug, typeSlug, subSlug } = useParams();
 
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000]);
+  
 
   type HighlightFilter = "all" | "isNew" | "isBestSeller" | "isTrending";
-  const [highlightFilter, setHighlightFilter] =
-    useState<HighlightFilter>("all");
-  const [discountFilters, setDiscountFilters] = useState<any[]>([]);
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+const highlightFromUrl = searchParams.get("highlight") || "all";
+const minFromUrl = Number(searchParams.get("min")) || 0;
+const maxFromUrl = Number(searchParams.get("max")) || 3000;
+const discountFromUrl = searchParams.get("discount");
+
+const [highlightFilter, setHighlightFilter] =
+  useState<HighlightFilter>(highlightFromUrl as HighlightFilter);
+
+const [priceRange, setPriceRange] =
+  useState<[number, number]>([minFromUrl, maxFromUrl]);
+
+const parseDiscountFromUrl = () => {
+  if (!discountFromUrl) return [];
+
+  return discountFromUrl.split(",").map(range => {
+    const [min, max] = range.split("-").map(Number);
+    return { min, max };
+  });
+};
+
+const [discountFilters, setDiscountFilters] =
+  useState<{ min: number; max: number }[]>(parseDiscountFromUrl());
+
+
+  useEffect(() => {
+  setHighlightFilter(highlightFromUrl as HighlightFilter);
+  setPriceRange([minFromUrl, maxFromUrl]);
+setDiscountFilters(parseDiscountFromUrl());
+
+}, [highlightFromUrl, minFromUrl, maxFromUrl, discountFromUrl]);
 
 
 
@@ -81,6 +109,34 @@ useEffect(() => {
   }
 }, [sortOption, priceRange, highlightFilter, discountFilters]);
 
+
+useEffect(() => {
+  setSearchParams(prev => {
+    const next = new URLSearchParams(prev);
+
+    next.set("page", "1");
+
+    if (highlightFilter !== "all") {
+      next.set("highlight", highlightFilter);
+    } else {
+      next.delete("highlight");
+    }
+
+    next.set("min", priceRange[0].toString());
+    next.set("max", priceRange[1].toString());
+
+    if (discountFilters.length > 0) {
+  next.set(
+    "discount",
+    discountFilters.map(d => `${d.min}-${d.max}`).join(",")
+  );
+} else {
+      next.delete("discount");
+    }
+
+    return next;
+  });
+}, [highlightFilter, priceRange, discountFilters]);
 
 
   // PAGINATION (should use sortedProducts, not filteredProducts)
