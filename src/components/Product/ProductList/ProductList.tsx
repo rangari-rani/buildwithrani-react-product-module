@@ -1,4 +1,4 @@
-import { useParams, useSearchParams  } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { useProductFilters } from "./hooks/useProductFilters";
@@ -23,7 +23,7 @@ const discountBuckets = [
 ];
 
 export default function ProductList() {
-    const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { categorySlug, typeSlug, subSlug } = useParams();
 
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000]);
@@ -36,11 +36,16 @@ export default function ProductList() {
 
 
 
-const pageFromUrl = Number(searchParams.get("page")) || 1;
-const sortFromUrl = searchParams.get("sort") || "";
+  const pageFromUrl = Number(searchParams.get("page")) || 1;
+  const sortFromUrl = searchParams.get("sort") || "";
 
-const [sortOption, setSortOption] = useState(sortFromUrl);
-const [currentPage, setCurrentPage] = useState(pageFromUrl);
+  const [sortOption, setSortOption] = useState(sortFromUrl);
+  const [currentPage, setCurrentPage] = useState(pageFromUrl);
+
+  useEffect(() => {
+    setCurrentPage(pageFromUrl);
+    setSortOption(sortFromUrl);
+  }, [pageFromUrl, sortFromUrl]);
 
   // FILTERING 
   const filteredProducts = useProductFilters({
@@ -53,25 +58,30 @@ const [currentPage, setCurrentPage] = useState(pageFromUrl);
   });
 
   const handlePageChange = (page: number) => {
-  setCurrentPage(page);
+    setCurrentPage(page);
 
-  setSearchParams(prev => {
-    prev.set("page", page.toString());
-    return prev;
-  });
-};
+    setSearchParams(prev => {
+      prev.set("page", page.toString());
+      return prev;
+    });
+  };
 
   // SORTING (sorting happens AFTER filtering)
   const sortedProducts = useProductSorting(filteredProducts, sortOption);
 
   // Reset page on filter/sort change
-  useEffect(() => {
+useEffect(() => {
+  if (currentPage !== 1) {
     setCurrentPage(1);
-     setSearchParams(prev => {
-    prev.set("page", "1");
-    return prev;
-  });
-  }, [sortOption,priceRange, highlightFilter, discountFilters]);
+
+    setSearchParams(prev => {
+      prev.set("page", "1");
+      return prev;
+    });
+  }
+}, [sortOption, priceRange, highlightFilter, discountFilters]);
+
+
 
   // PAGINATION (should use sortedProducts, not filteredProducts)
   const productsPerPage = 9;
@@ -83,10 +93,11 @@ const [currentPage, setCurrentPage] = useState(pageFromUrl);
     startIndex + productsPerPage
   );
 
-useEffect(() => {
-  setIsLoading(true);
-}, [searchParams]);
-
+  useEffect(() => {
+  if (currentPage > totalPages && totalPages > 0) {
+    handlePageChange(1);
+  }
+}, [totalPages]);
 
 
   const breadcrumbs = useBreadcrumbs({
@@ -98,13 +109,15 @@ useEffect(() => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // simulate API
+    setIsLoading(true);
+
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10);
+    }, 150);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [searchParams]);
+
 
   console.log("TOTAL PRODUCTS:", products.length);
   console.log("AFTER FILTERING:", filteredProducts.length);
@@ -164,18 +177,18 @@ useEffect(() => {
         </div>
 
         {/* Sort Bar */}
-       <SortBar
-  title="All Products"
-  setSortOption={(value) => {
-    setSortOption(value);
+        <SortBar
+          title="All Products"
+          setSortOption={(value) => {
+            setSortOption(value);
 
-    setSearchParams(prev => {
-      prev.set("sort", value);
-      prev.set("page", "1");
-      return prev;
-    });
-  }}
-/>
+            setSearchParams(prev => {
+              prev.set("sort", value);
+              prev.set("page", "1");
+              return prev;
+            });
+          }}
+        />
 
 
         {/* Product Grid */}
@@ -190,11 +203,11 @@ useEffect(() => {
         </div>
 
         {/* Pagination */}
-      <Pagination
-  currentPage={currentPage}
-  totalPages={totalPages}
-  onPageChange={handlePageChange}
-/>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
 
       </main>
     </div>
