@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams  } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { useProductFilters } from "./hooks/useProductFilters";
@@ -23,15 +23,24 @@ const discountBuckets = [
 ];
 
 export default function ProductList() {
+    const [searchParams, setSearchParams] = useSearchParams();
   const { categorySlug, typeSlug, subSlug } = useParams();
-  const [sortOption, setSortOption] = useState("");
+
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000]);
-  const [currentPage, setCurrentPage] = useState(1);
+
   type HighlightFilter = "all" | "isNew" | "isBestSeller" | "isTrending";
   const [highlightFilter, setHighlightFilter] =
     useState<HighlightFilter>("all");
   const [discountFilters, setDiscountFilters] = useState<any[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+
+
+const pageFromUrl = Number(searchParams.get("page")) || 1;
+const sortFromUrl = searchParams.get("sort") || "";
+
+const [sortOption, setSortOption] = useState(sortFromUrl);
+const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
   // FILTERING 
   const filteredProducts = useProductFilters({
@@ -43,13 +52,26 @@ export default function ProductList() {
     discountFilters,
   });
 
+  const handlePageChange = (page: number) => {
+  setCurrentPage(page);
+
+  setSearchParams(prev => {
+    prev.set("page", page.toString());
+    return prev;
+  });
+};
+
   // SORTING (sorting happens AFTER filtering)
   const sortedProducts = useProductSorting(filteredProducts, sortOption);
 
   // Reset page on filter/sort change
   useEffect(() => {
     setCurrentPage(1);
-  }, [sortOption, priceRange, highlightFilter, discountFilters]);
+     setSearchParams(prev => {
+    prev.set("page", "1");
+    return prev;
+  });
+  }, [sortOption,priceRange, highlightFilter, discountFilters]);
 
   // PAGINATION (should use sortedProducts, not filteredProducts)
   const productsPerPage = 9;
@@ -61,9 +83,10 @@ export default function ProductList() {
     startIndex + productsPerPage
   );
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [sortedProducts]);
+useEffect(() => {
+  setIsLoading(true);
+}, [searchParams]);
+
 
 
   const breadcrumbs = useBreadcrumbs({
@@ -141,7 +164,19 @@ export default function ProductList() {
         </div>
 
         {/* Sort Bar */}
-        <SortBar title="All Products" setSortOption={setSortOption} />
+       <SortBar
+  title="All Products"
+  setSortOption={(value) => {
+    setSortOption(value);
+
+    setSearchParams(prev => {
+      prev.set("sort", value);
+      prev.set("page", "1");
+      return prev;
+    });
+  }}
+/>
+
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -155,11 +190,12 @@ export default function ProductList() {
         </div>
 
         {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+      <Pagination
+  currentPage={currentPage}
+  totalPages={totalPages}
+  onPageChange={handlePageChange}
+/>
+
       </main>
     </div>
   );

@@ -30,3 +30,4 @@ export function useProductSorting(products: Product[], sortOption: string) {
     return sorted;
   }, [products, sortOption]);
 }
+

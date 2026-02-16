@@ -24,3 +24,4 @@ export default function SortBar({ setSortOption, title }: Props) {
     </div>
   );
 }
+
